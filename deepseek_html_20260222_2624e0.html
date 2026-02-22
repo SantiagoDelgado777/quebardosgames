@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameNews · Portal de noticias (maqueta UI)</title>
+    <style>
+        /* ===== RESET / GLOBAL ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f2f2f2;
+            color: #111;
+            line-height: 1.5;
+        }
+
+        /* ===== BARRA SUPERIOR OSCURA (IDÉNTICA ESTÉTICA) ===== */
+        .top-bar {
+            background-color: #1a1a1a;
+            padding: 8px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            border-bottom: 3px solid #ff9900;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: white;
+            background-color: #ff9900;
+            padding: 4px 12px;
+            border-radius: 4px;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links a {
+            color: #ccc;
+            text-decoration: none;
+            margin: 0 12px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: white;
+        }
+
+        .user-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .user-actions button {
+            background: none;
+            border: 1px solid #555;
+            color: #eee;
+            padding: 6px 14px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .user-actions button:hover {
+            background-color: #333;
+            border-color: #ff9900;
+        }
+
+        .user-actions .btn-solid {
+            background-color: #ff9900;
+            border-color: #ff9900;
+            color: #1a1a1a;
+        }
+
+        .user-actions .btn-solid:hover {
+            background-color: #e68a00;
+        }
+
+        /* ===== BARRA DE BÚSQUEDA ===== */
+        .search-section {
+            background-color: #1f1f1f;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid #333;
+        }
+
+        .search-box {
+            flex: 1;
+            display: flex;
+            max-width: 500px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 30px 0 0 30px;
+            font-size: 14px;
+            background-color: #333;
+            color: white;
+            outline: none;
+        }
+
+        .search-box input::placeholder {
+            color: #999;
+        }
+
+        .search-box button {
+            background-color: #ff9900;
+            border: none;
+            border-radius: 0 30px 30px 0;
+            padding: 0 25px;
+            font-weight: 600;
+            color: #1a1a1a;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .trending-tags {
+            display: flex;
+            gap: 10px;
+            color: #aaa;
+            font-size: 13px;
+        }
+
+        .trending-tags span {
+            background-color: #2a2a2a;
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+
+        /* ===== CONTENEDOR PRINCIPAL ===== */
+        .main-container {
+            max-width: 1300px;
+            margin: 25px auto;
+            padding: 0 20px;
+        }
+
+        /* CABECERA DE SECCIÓN (estilo vandal) */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 8px;
+        }
+
+        .section-header h2 {
+            font-size: 22px;
+            font-weight: 600;
+            color: #222;
+        }
+
+        .section-header a {
+            color: #ff9900;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* ===== ARTÍCULO DESTACADO (PORTADA GRANDE) ===== */
+        .featured-article {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 25px;
+            margin-bottom: 40px;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .featured-main {
+            position: relative;
+        }
+
+        .featured-img {
+            height: 300px;
+            background: linear-gradient(145deg, #2c3e50, #1a2632);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+        }
+
+        .featured-content {
+            padding: 25px;
+        }
+
+        .featured-content .category-tag {
+            color: #ff9900;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .featured-content h1 {
+            font-size: 28px;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+
+        .featured-content p {
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .featured-meta {
+            display: flex;
+            gap: 20px;
+            color: #777;
+            font-size: 14px;
+        }
+
+        .featured-side {
+            background-color: #f8f8f8;
+            padding: 25px;
+        }
+
+        .side-news-item {
+            padding: 15px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .side-news-item:last-child {
+            border-bottom: none;
+        }
+
+        .side-news-item h4 {
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: #222;
+        }
+
+        .side-news-item .time {
+            color: #ff9900;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* ===== GRID DE NOTICIAS ===== */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .news-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.15s ease;
+        }
+
+        .news-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 20px rgba(0,0,0,0.1);
+        }
+
+        .card-image {
+            height: 160px;
+            background: linear-gradient(145deg, #445566, #2a3a4a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+        }
+
+        .card-content {
+            padding: 18px;
+        }
+
+        .card-content h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .card-excerpt {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #888;
+            font-size: 13px;
+        }
+
+        .card-footer .author {
+            color: #ff9900;
+            font-weight: 500;
+        }
+
+        /* ===== SECCIÓN DE ANÁLISIS / REVIEWS ===== */
+        .reviews-section {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 40px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .reviews-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .reviews-header h2 {
+            font-size: 24px;
+        }
+
+        .review-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 20px;
+        }
+
+        .review-card {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .review-game {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .review-score {
+            color: #ff9900;
+            font-size: 24px;
+            font-weight: 700;
+            margin: 10px 0;
+        }
+
+        .review-text {
+            color: #555;
+            font-size: 14px;
+        }
+
+        /* ===== FILTROS Y BOTONES ===== */
+        .filter-bar {
+            background: white;
+            border-radius: 40px;
+            padding: 10px 20px;
+            margin: 30px 0;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 20px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+        }
+
+        .filter-item {
+            color: #555;
+            font-size: 14px;
+            cursor: pointer;
+            padding: 5px 0;
+        }
+
+        .filter-item.active {
+            color: #ff9900;
+            font-weight: 600;
+            border-bottom: 2px solid #ff9900;
+        }
+
+        .btn-custom {
+            background-color: #ff9900;
+            color: #1a1a1a;
+            border: none;
+            padding: 8px 25px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #ccc;
+            color: #333;
+            padding: 8px 25px;
+            border-radius: 30px;
+            cursor: pointer;
+        }
+
+        /* ===== PIE DE PÁGINA ===== */
+        .footer {
+            background-color: #1a1a1a;
+            color: #aaa;
+            padding: 40px 20px 20px;
+            margin-top: 60px;
+            border-top: 3px solid #ff9900;
+        }
+
+        .footer-content {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h4 {
+            color: white;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .footer-section a {
+            color: #aaa;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+            font-size: 12px;
+        }
+
+        /* Responsive */
+        @media (max-width: 800px) {
+            .featured-article {
+                grid-template-columns: 1fr;
+            }
+            .top-bar {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- BARRA SUPERIOR (MISMA ESTÉTICA) -->
+    <div class="top-bar">
+        <div class="logo-area">
+            <div class="logo">GAMENEWS</div>
+            <div class="nav-links">
+                <a href="#">NOTICIAS</a>
+                <a href="#">ANÁLISIS</a>
+                <a href="#">VIDEOS</a>
+                <a href="#">GUÍAS</a>
+                <a href="#">FOROS</a>
+            </div>
+        </div>
+        <div class="user-actions">
+            <button>INICIAR SESIÓN</button>
+            <button class="btn-solid">REGISTRO</button>
+        </div>
+    </div>
+
+    <!-- BARRA DE BÚSQUEDA -->
+    <div class="search-section">
+        <div class="search-box">
+            <input type="text" placeholder="Buscar noticias, análisis, guías...">
+            <button>BUSCAR</button>
+        </div>
+        <div class="trending-tags">
+            <span>#TheLastOfUs</span>
+            <span>#GTA6</span>
+            <span>#NintendoSwitch2</span>
+            <span>#Xbox</span>
+        </div>
+    </div>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <div class="main-container">
+
+        <!-- ARTÍCULO DESTACADO (ESTILO VANDAL) -->
+        <div class="featured-article">
+            <div class="featured-main">
+                <div class="featured-img">
+                    <span>🎮 Imagen destacada: Nuevo anuncio</span>
+                </div>
+                <div class="featured-content">
+                    <span class="category-tag">EXCLUSIVA</span>
+                    <h1>Filtrados los primeros detalles de la próxima consola de Nintendo</h1>
+                    <p>Según fuentes cercanas al desarrollo, la nueva plataforma contaría con retrocompatibilidad y un salto gráfico significativo. Os contamos todos los rumores confirmados hasta ahora.</p>
+                    <div class="featured-meta">
+                        <span>📅 Hace 2 horas</span>
+                        <span>✍️ Carlos Martínez</span>
+                        <span>💬 45 comentarios</span>
+                    </div>
+                </div>
+            </div>
+            <div class="featured-side">
+                <h3 style="margin-bottom: 15px;">⚡ Última hora</h3>
+                <div class="side-news-item">
+                    <h4>PlayStation anuncia nueva fecha para su State of Play</h4>
+                    <span class="time">Hace 15 minutos</span>
+                </div>
+                <div class="side-news-item">
+                    <h4>El esperado RPG de los creadores de The Witcher se retrasa a 2026</h4>
+                    <span class="time">Hace 45 minutos</span>
+                </div>
+                <div class="side-news-item">
+                    <h4>Xbox Game Pass añade 8 juegos más en mayo</h4>
+                    <span class="time">Hace 1 hora</span>
+                </div>
+                <div class="side-news-item">
+                    <h4>Epic Games Store regalará dos juegos la próxima semana</h4>
+                    <span class="time">Hace 2 horas</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- FILTROS RÁPIDOS -->
+        <div class="filter-bar">
+            <span class="filter-item active">Todas</span>
+            <span class="filter-item">PC</span>
+            <span class="filter-item">PlayStation</span>
+            <span class="filter-item">Xbox</span>
+            <span class="filter-item">Nintendo</span>
+            <span class="filter-item">Móvil</span>
+            <button class="btn-custom">Seguir</button>
+            <button class="btn-outline">Filtros</button>
+        </div>
+
+        <!-- SECCIÓN: ÚLTIMAS NOTICIAS -->
+        <div class="section-header">
+            <h2>📰 Últimas noticias</h2>
+            <a href="#">Ver todas →</a>
+        </div>
+
+        <div class="news-grid">
+            <!-- Noticia 1 -->
+            <div class="news-card">
+                <div class="card-image"><span>Captura</span></div>
+                <div class="card-content">
+                    <h3>Rockstar actualiza GTA Online con nuevo contenido</h3>
+                    <div class="card-excerpt">Nuevas misiones, vehículos y mejoras en el rendimiento de la versión PC...</div>
+                    <div class="card-footer">
+                        <span class="author">Javier G.</span>
+                        <span>🔹 3h</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Noticia 2 -->
+            <div class="news-card">
+                <div class="card-image"><span>Gameplay</span></div>
+                <div class="card-content">
+                    <h3>Análisis de Stellar Blade: ¿está a la altura de las expectativas?</h3>
+                    <div class="card-excerpt">Probamos el esperado exclusivo de PS5 y te contamos todas sus claves...</div>
+                    <div class="card-footer">
+                        <span class="author">Laura S.</span>
+                        <span>🔹 5h</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Noticia 3 -->
+            <div class="news-card">
+                <div class="card-image"><span>Tráiler</span></div>
+                <div class="card-content">
+                    <h3>Square Enix muestra 10 minutos de gameplay de Final Fantasy VII Rebirth</h3>
+                    <div class="card-excerpt">Nuevas imágenes del mundo abierto y minijuegos...</div>
+                    <div class="card-footer">
+                        <span class="author">David R.</span>
+                        <span>🔹 7h</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Noticia 4 -->
+            <div class="news-card">
+                <div class="card-image"><span>Análisis</span></div>
+                <div class="card-content">
+                    <h3>Valve podría estar desarrollando una nueva consola portátil</h3>
+                    <div class="card-excerpt">Así sería la posible sucesora de Steam Deck según las patentes...</div>
+                    <div class="card-footer">
+                        <span class="author">Ana T.</span>
+                        <span>🔹 9h</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN DE ANÁLISIS CON NOTAS (COMO VANDAL) -->
+        <div class="reviews-section">
+            <div class="reviews-header">
+                <h2>🎯 Análisis recientes</h2>
+                <a href="#" style="color: #ff9900;">Todos los análisis →</a>
+            </div>
+            <div class="review-cards">
+                <div class="review-card">
+                    <div class="review-game">Final Fantasy VII Rebirth</div>
+                    <div class="review-score">9.2</div>
+                    <div class="review-text">Una obra maestra que expande el universo de forma brillante.</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-game">Rise of the Ronin</div>
+                    <div class="review-score">8.5</div>
+                    <div class="review-text">Gran acción en un mundo abierto detallado, aunque con algunos altibajos.</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-game">Princess Peach: Showtime!</div>
+                    <div class="review-score">7.8</div>
+                    <div class="review-text">Divertido y accesible, ideal para todos los públicos.</div>
+                </div>
+                <div class="review-card">
+                    <div class="review-game">Alone in the Dark</div>
+                    <div class="review-score">7.2</div>
+                    <div class="review-text">Un regreso correcto al terror con buenas ideas pero ejecución irregular.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN: MÁS NOTICIAS DESTACADAS -->
+        <div class="section-header" style="margin-top: 20px;">
+            <h2>🔥 Lo más leído</h2>
+            <a href="#">Ver más →</a>
+        </div>
+
+        <div class="news-grid">
+            <!-- Noticia 5 -->
+            <div class="news-card">
+                <div class="card-image"><span>Opinión</span></div>
+                <div class="card-content">
+                    <h3>Opinión: ¿Está perdiendo identidad PlayStation?</h3>
+                    <div class="card-excerpt">Analizamos la estrategia actual de Sony y su apuesta por los servicios en vivo...</div>
+                    <div class="card-footer">
+                        <span class="author">Carlos M.</span>
+                        <span>⭐ 34K lecturas</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Noticia 6 -->
+            <div class="news-card">
+                <div class="card-image"><span>Guía</span></div>
+                <div class="card-content">
+                    <h3>Guía completa de Dragon's Dogma 2: mejores builds</h3>
+                    <div class="card-excerpt">Todas las clases, habilidades y equipamiento para dominar el juego...</div>
+                    <div class="card-footer">
+                        <span class="author">Miguel A.</span>
+                        <span>⭐ 22K lecturas</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Noticia 7 -->
+            <div class="news-card">
+                <div class="card-image"><span>Rumor</span></div>
+                <div class="card-content">
+                    <h3>Nuevo God of War podría estar ambientado en Egipto</h3>
+                    <div class="card-excerpt">Una filtración sugiere que Santa Monica Studio ya trabaja en la siguiente entrega...</div>
+                    <div class="card-footer">
+                        <span class="author">Elena R.</span>
+                        <span>⭐ 19K lecturas</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Noticia 8 -->
+            <div class="news-card">
+                <div class="card-image"><span>Noticia</span></div>
+                <div class="card-content">
+                    <h3>Rebajas de primavera en Steam: mejores ofertas</h3>
+                    <div class="card-excerpt">Seleccionamos los juegos con mayores descuentos que no deberías perderte...</div>
+                    <div class="card-footer">
+                        <span class="author">Raúl G.</span>
+                        <span>⭐ 15K lecturas</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PIE DE PÁGINA -->
+    <div class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>GameNews</h4>
+                <a href="#">Quiénes somos</a>
+                <a href="#">Contacto</a>
+                <a href="#">Publicidad</a>
+                <a href="#">Trabaja con nosotros</a>
+            </div>
+            <div class="footer-section">
+                <h4>Secciones</h4>
+                <a href="#">Noticias</a>
+                <a href="#">Análisis</a>
+                <a href="#">Vídeos</a>
+                <a href="#">Guías y trucos</a>
+                <a href="#">Foros</a>
+            </div>
+            <div class="footer-section">
+                <h4>Legal</h4>
+                <a href="#">Aviso legal</a>
+                <a href="#">Política de privacidad</a>
+                <a href="#">Política de cookies</a>
+                <a href="#">Condiciones de uso</a>
+            </div>
+            <div class="footer-section">
+                <h4>Síguenos</h4>
+                <a href="#">Twitter</a>
+                <a href="#">Facebook</a>
+                <a href="#">Instagram</a>
+                <a href="#">Youtube</a>
+                <a href="#">Discord</a>
+            </div>
+        </div>
+        <div class="copyright">
+            © 2025 GameNews - Trabajo universitario de maquetación UI. Contenido ficticio con fines académicos.
+        </div>
+    </div>
+
+    <!-- PEQUEÑO SCRIPT PARA SIMULAR INTERACCIÓN -->
+    <script>
+        (function() {
+            // Activar filtros al hacer clic
+            const filterItems = document.querySelectorAll('.filter-item');
+            filterItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    filterItems.forEach(f => f.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // Simular clics en botones (sin funcionalidad real)
+            const buttons = document.querySelectorAll('button, .filter-item');
+            buttons.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    if(this.classList.contains('filter-item')) return; // ya manejado
+                    e.preventDefault();
+                    alert('Demo UI · Trabajo universitario');
+                });
+            });
+
+            // Enlaces simulados
+            const links = document.querySelectorAll('a');
+            links.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    alert('Navegación simulada · Estructura de portal de noticias');
+                });
+            });
+        })();
+    </script>
+</body>
+</html>
